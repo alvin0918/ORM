@@ -1,2 +1,2 @@
 # ORM
-go语言实现简单ORM
+go语言实现简单Mysql操作
