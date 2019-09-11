@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/alvin0918/ORM"
+)
 
 func main()  {
-	fmt.Println("AAA")
+	_, _ = ORM.DBConfig.Alias("").TableName("").Field("").Select()
 }

@@ -9,10 +9,6 @@ import (
 	"strings"
 )
 
-type MysqlDBContent struct {
-	content *sql.DB
-}
-
 type MysqlDBConfig struct {
 	where     string
 	orderBy   string
@@ -25,36 +21,27 @@ type MysqlDBConfig struct {
 }
 
 var DBConfig *MysqlDBConfig
-var DBContent *MysqlDBContent
 
 /**
 初始化数据库
 */
 func init() {
 	DBConfig = &MysqlDBConfig{}
-	DBContent = &MysqlDBContent{}
-
-	// 每次调用首相初始化一个连接
-	DBContent.conn()
 }
 
 /**
 连接数据库
 */
-func (DBContent *MysqlDBContent) conn() {
-	var (
-		db  *sql.DB
-		err error
-	)
+func conn() (db *sql.DB, err error) {
 
 	// 连接MySQL
 	if db, err = sql.Open("mysql", "root:abc123456@127.0.0.1/ddz?charset=utf-8"); err != nil {
 		panic(errors.New("数据库连接失败！原因是：" + err.Error()))
 	}
 
-	// 将连接对象赋值给结构体
-	DBContent.content = db
+	err = db.Ping()
 
+	return
 }
 
 /**
@@ -156,14 +143,20 @@ func (DBConfig *MysqlDBConfig) Select() (result map[int]map[string]string, err e
 		scans []interface{}
 		i     int
 		row   map[string]string
+		db *sql.DB
 	)
+
+	// 每次调用首相初始化一个连接
+	if db, err = conn(); err != nil {
+		panic(errors.New(err.Error()))
+	}
 
 	str = "SELECT"
 
 	// 获取SQL语句
 	query = DBConfig.analysisSql(str)
 
-	if rows, err = DBContent.content.Query(query); err != nil {
+	if rows, err = db.Query(query); err != nil {
 		panic(errors.New("查询失败!" + err.Error()))
 	}
 
@@ -190,7 +183,7 @@ func (DBConfig *MysqlDBConfig) Select() (result map[int]map[string]string, err e
 
 	// 循环游标，向下推移
 	for rows.Next() {
-		if rows.Scan(scans...); err != nil {
+		if err = rows.Scan(scans...); err != nil {
 			panic(errors.New(err.Error()))
 		}
 
@@ -221,14 +214,20 @@ func (DBConfig *MysqlDBConfig) Insert(isRows bool) (rows int64, err error) {
 		stmt   *sql.Stmt
 		result sql.Result
 		str    string
+		db *sql.DB
 	)
+
+	// 每次调用首相初始化一个连接
+	if db, err = conn(); err != nil {
+		panic(errors.New(err.Error()))
+	}
 
 	str = "INSERT"
 
 	// 获取SQL语句
 	query = DBConfig.analysisSql(str)
 
-	if stmt, err = DBContent.content.Prepare(query); err != nil {
+	if stmt, err = db.Prepare(query); err != nil {
 		panic(errors.New(err.Error()))
 	}
 
@@ -260,14 +259,20 @@ func (DBConfig *MysqlDBConfig) Save(isRows bool) (rows int64, err error) {
 		stmt   *sql.Stmt
 		result sql.Result
 		str    string
+		db *sql.DB
 	)
+
+	// 每次调用首相初始化一个连接
+	if db, err = conn(); err != nil {
+		panic(errors.New(err.Error()))
+	}
 
 	str = "Upload"
 
 	// 获取SQL语句
 	query = DBConfig.analysisSql(str)
 
-	if stmt, err = DBContent.content.Prepare(query); err != nil {
+	if stmt, err = db.Prepare(query); err != nil {
 		panic(errors.New(err.Error()))
 	}
 
@@ -299,14 +304,20 @@ func (DBConfig *MysqlDBConfig) Delete(isRows bool) (rows int64, err error) {
 		stmt   *sql.Stmt
 		result sql.Result
 		str    string
+		db *sql.DB
 	)
+
+	// 每次调用首相初始化一个连接
+	if db, err = conn(); err != nil {
+		panic(errors.New(err.Error()))
+	}
 
 	str = "DELETE"
 
 	// 获取SQL语句
 	query = DBConfig.analysisSql(str)
 
-	if stmt, err = DBContent.content.Prepare(query); err != nil {
+	if stmt, err = db.Prepare(query); err != nil {
 		panic(errors.New(err.Error()))
 	}
 
