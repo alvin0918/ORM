@@ -145,7 +145,7 @@ func (DBConfig *MysqlDBConfig) Join(str string, mode string) *MysqlDBConfig {
 /**
 查询数据， 返回结果map
 */
-func (DBConnect *MysqlDBContent) Select() (result map[int]map[string]string, err error) {
+func (DBConfig *MysqlDBConfig) Select() (result map[int]map[string]string, err error) {
 
 	var (
 		query string
@@ -214,7 +214,7 @@ func (DBConnect *MysqlDBContent) Select() (result map[int]map[string]string, err
 /**
 插入数据 isRows true 返回影响的行数 FALSE 返回最后一行的主键ID
 */
-func (DBConnect *MysqlDBContent) Insert(isRows bool) (rows int64, err error) {
+func (DBConfig *MysqlDBConfig) Insert(isRows bool) (rows int64, err error) {
 
 	var (
 		query  string
