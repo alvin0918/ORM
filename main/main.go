@@ -15,7 +15,7 @@ func main()  {
 
 	field["A"] = "B"
 
-	a, _ := ORM.DBConfig.Where("1=1", "and").TableName("luffy_teacher").IsSql(true).Find()
+	a, _ := ORM.DBConfig.Where("1=1", "and").TableName("luffy_teacher").IsPrintSql(true).Find()
 
 	for k,v := range a {
 		fmt.Println(k)

@@ -134,7 +134,7 @@ func (DBConfig *MysqlDBConfig) Join(str string, mode string) *MysqlDBConfig {
 	return DBConfig
 }
 
-func (DBConfig *MysqlDBConfig) IsSql(mode bool) *MysqlDBConfig {
+func (DBConfig *MysqlDBConfig) IsPrintSql(mode bool) *MysqlDBConfig {
 
 	DBConfig.isSql = mode
 
