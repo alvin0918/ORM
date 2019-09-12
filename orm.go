@@ -134,6 +134,9 @@ func (DBConfig *MysqlDBConfig) Join(str string, mode string) *MysqlDBConfig {
 	return DBConfig
 }
 
+/**
+是否打印SQL
+ */
 func (DBConfig *MysqlDBConfig) IsPrintSql(mode bool) *MysqlDBConfig {
 
 	DBConfig.isSql = mode
@@ -220,6 +223,9 @@ func (DBConfig *MysqlDBConfig) Select() (result map[int]map[string]string, err e
 	return
 }
 
+/**
+指查询一条
+ */
 func (DBConfig *MysqlDBConfig) Find() (result map[string]string, err error) {
 
 	var (
